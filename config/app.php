@@ -50,11 +50,11 @@ return [
         'namespace' => 'App',
         'encoding' => env('APP_ENCODING', 'UTF-8'),
         /*
- * Configure the default timezone.
- *
- * See https://www.php.net/manual/en/timezones.php for available options.
- */
-'defaultTimezone' => 'Asia/Tokyo',
+         * Configure the default timezone.
+         *
+         * See https://www.php.net/manual/en/timezones.php for available options.
+         */
+        'defaultTimezone' => 'Asia/Tokyo',
         'base' => false,
         'dir' => 'src',
         'webroot' => 'webroot',
@@ -411,10 +411,11 @@ return [
     'Session' => [
         'defaults' => 'php',
         'ini' => [
-            'session.cookie_samesite' => 'Lax',
-            'session.cookie_secure' => false,
+            'session.cookie_samesite' => 'None',
+            'session.cookie_secure' => true,
             'session.cookie_httponly' => true,
             'session.cookie_domain' => '',  // ドメイン指定をクリア
+            'session.save_path' => TMP . 'sessions',
         ],
     ],
 ];

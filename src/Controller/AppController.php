@@ -29,17 +29,21 @@ class AppController extends Controller
         {
             parent::beforeFilter($event);
     
-            // 3. CORS ヘッダーの設定（環境変数からフロントエンドURLを取得）
+            // 3. CORS ヘッダーの設定（複数オリジン対応）
             if (str_contains($this->request->getPath(), '/api')) {
-                $frontendUrl = env('FRONTEND_URL', 'http://localhost:4173');
-                // 開発環境ではワイルドカードを許可
-                $allowOrigin = (env('DEBUG', false)) ? '*' : $frontendUrl;
+                $allowedOrigins = [
+                    'http://localhost:5173',
+                    'http://localhost:4173',
+                    'https://sree-cp-f.cspm.fun',
+                ];
+                $origin = $this->request->getHeaderLine('Origin');
+                $allowOrigin = in_array($origin, $allowedOrigins) ? $origin : '';
                 
                 $this->response = $this->response
                     ->withHeader('Access-Control-Allow-Origin', $allowOrigin)
                     ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
                     ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
-                    ->withHeader('Access-Control-Allow-Credentials', $allowOrigin !== '*' ? 'true' : 'false');
+                    ->withHeader('Access-Control-Allow-Credentials', 'true');
     
                 // OPTIONSリクエストには即座に200を返す
                 if ($this->request->is('options')) {

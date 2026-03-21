@@ -15,6 +15,8 @@
  * @license       MIT License (https://opensource.org/licenses/mit-license.php)
  */
 
+ini_set('session.save_path', dirname(__DIR__) . '/sree-cp-b-src/tmp/sessions');
+
 // For built-in server
 if (PHP_SAPI === 'cli-server') {
     $_SERVER['PHP_SELF'] = '/' . basename(__FILE__);
@@ -25,13 +27,13 @@ if (PHP_SAPI === 'cli-server') {
         return false;
     }
 }
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/sree-cp-b-src/vendor/autoload.php';
 
 use App\Application;
 use Cake\Http\Server;
 
 // Bind your application to the server.
-$server = new Server(new Application(dirname(__DIR__) . '/config'));
+$server = new Server(new Application(dirname(__DIR__) . '/sree-cp-b-src/config'));
 
 // Run the request/response through the application and emit the response.
 $server->emit($server->run());

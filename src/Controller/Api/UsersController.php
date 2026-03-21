@@ -66,16 +66,21 @@ class UsersController extends \App\Controller\AppController
     {
         $identity = $this->Authentication->getIdentity();
         if ($identity !== null) {
-            return $this->json([
+            $response = $this->json([
                 'isLoggedIn' => true,
                 'user' => [
                     'username' => $identity->user->username ?? '',
                     'student_id' => $identity->user->student_id ?? 0,
                 ],
             ]);
+        } else {
+            $response = $this->json(['isLoggedIn' => false]);
         }
 
-        return $this->json(['isLoggedIn' => false]);
+        return $response
+            ->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
+            ->withHeader('Pragma', 'no-cache')
+            ->withHeader('Expires', '0');
     }
 
     // ログアウト API
